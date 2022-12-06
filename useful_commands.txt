@@ -1,0 +1,64 @@
+Configure Router basic settings commands
+----------------------------------------
+
+no ip domain lookup
+hostname R1
+banner motd #Unauthorized Acess is Prohibited#
+
+Configure password security
+---------------------------
+
+line console 0
+password ciscoconsolepassword
+login
+exit
+
+enable secret ciscoencryptionpass
+service password-encryption
+security passwords min-length 10
+
+Configure SSH
+-------------
+
+username admin secret admin1pass
+
+ip domain name ccna-ptsa.com
+
+crypto key generate rsa
+1024
+
+line vty 0 15
+login local
+transport input ssh 
+exit
+
+VLans 
+-----
+vlan 2
+name Bikes
+vlan 3
+name Trikes
+
+Enable Trunking on Interfaces
+-----------------------------
+interface range f0/1-2
+switchport mode trunk 
+switchport trunk native vlan 6
+switchport trunk allowed vlan 2, 3, 4, 5, 6
+exit
+
+Configure EtherChannel
+----------------------
+interface range f0/1-2
+channel-group 1 mode active
+interface port-channel 1
+exit
+
+DHCP for VLans
+--------------
+ip dhcp excluded-address 10.19.8.65 10.19.8.84
+ip dhcp pool CCNA-B
+network 10.19.8.64 255.255.255.224
+default-router 10.19.8.65
+domain-name ccna-b.net
+exit
